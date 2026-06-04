@@ -1,6 +1,6 @@
 # PassGen
 ## _Descripción_
-Generador de contraseñas pseudo-aleatorias basadas en la hora de ejecución y la hora en la que se ha introducido un valor, denominado "semilla" sobre la que se harán las operaciones pertinentes.
+Generador de contraseñas pseudo-aleatorias basadas en la entropía del hardware del computador donde se ejecuta. Por ahora, sólo tiene soporte de sistemas basados en UNIX.
 
 ## _Propósito_
 Generar una contraseña segura, difícil de descifrar mediante ataques de fuerza bruta y con una generación pseudo-aleatoria que _por medios comunes_ no puede ser descifrada, acorde con los gustos y necesidades especificadas por el usuario.
