@@ -14,14 +14,14 @@ uint64_t Generator::readKernelEntropy(){
     // del ratón, etc para generar "ruido" extremadamente difícil de predecir.
     std::ifstream entropyU("/dev/urandom", std::ios::binary);
     if (!entropyU)
-        throw std::runtime_error("Error opening /dev/urandom. Is this an UNIX device?\nIf so, try running the program in a few minutes.");
+        throw std::runtime_error("Error opening /dev/urandom.\nTip: Is this an UNIX device?");
 
     uint64_t a, b;
     entropyU.read(reinterpret_cast<char*>(&a), sizeof(a));
     entropyU.read(reinterpret_cast<char*>(&b), sizeof(b));
 
     if (!entropyU)
-        throw std::runtime_error("Error opening /dev/urandom. Is this an UNIX device?\nIf so, try running the program in a few minutes.");
+        throw std::runtime_error("Error reading from /dev/urandom.");
 
     // Murmur con avalancha, operación AND para mayor confusión
     return Generator::mix64(a) ^ Generator::mix64(b);
@@ -30,18 +30,16 @@ uint64_t Generator::readKernelEntropy(){
 // Public
 
 Generator::Generator(){
-    // Usa de semilla el instante 0 del tiempo actual
-    uint64_t currTime = time(0);
-    // Ahora, creamos nueva semilla aleatoria con dicho instante
-    srand(currTime);
-    if(!this->setSeed(rand()))
-        exit(-1);
+    // Usa de semilla la entropía actual del sistema
+    uint64_t currTime = this->readKernelEntropy();
+    if(!this->setSeed(currTime))
+        std::cerr << "WARNING! Seed not initialized correctly!";
 }
 
 Generator::Generator(uint64_t seed){
     // Asociamos la semilla!
     if(!this->setSeed(seed))
-        exit(-1);
+        std::cerr << "WARNING! Seed not initialized correctly!";
 }
 
 uint64_t Generator::getSeed(){

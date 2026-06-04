@@ -1,9 +1,5 @@
 #include <iostream>
 // Para generar números pseudoaleatorios
-#include <cstdlib>
-// Para que los números sean determinísticos con respecto a la ejecución actual del subproceso,
-// y no determinístcos con respecto al binario.
-#include <ctime>
 // Para leer datos entrópicos de /dev/random (ó /dev/urandom)
 #include <fstream>
 #include <cstdint>
