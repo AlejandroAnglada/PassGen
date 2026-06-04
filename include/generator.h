@@ -4,10 +4,13 @@
 // Para que los números sean determinísticos con respecto a la ejecución actual del subproceso,
 // y no determinístcos con respecto al binario.
 #include <ctime>
+// Para leer datos entrópicos de /dev/random (ó /dev/urandom)
+#include <fstream>
+#include <cstdint>
 
 class Generator{
 private:
-    u_int32_t _seed = 0;
+    uint64_t _seed = 0;
 
     /**
      * @author Alejandro Anglada Álvarez
@@ -17,12 +20,22 @@ private:
      * 
      * @param s New seed.
      * 
-     * @pre The u_int32_t must represent a safe, pseudo-randomly generated seed.
+     * @pre The uint64_t must represent a safe, pseudo-randomly generated seed.
      * @post This object's _seed is now set to s.
      * 
      * @return true if the _seed value was changed correctly, false otherwise.
      */
-    bool setSeed(u_int32_t s);
+    bool setSeed(uint64_t s);
+
+    /**
+     * @author Alejandro Anglada Álvarez
+     * @date 04-06-2026
+     * 
+     * @brief Adds a random amount given by UNIX-based kernels to the seed.
+     * 
+     * @return An unsigned 64-bit integer, that represents a random value.
+     */
+    uint64_t readKernelEntropy();
 
 public:
     /**
@@ -42,10 +55,10 @@ public:
      * 
      * @brief Generates a valid object of Generator type, given a seed.
      * 
-     * @pre The seed must be a valid instance of a u_int32_t data.
+     * @pre The seed must be a valid instance of a uint64_t data.
      * @post The newly-created Generator object has a _seed set to seed parameter.
      */
-    Generator(u_int32_t seed);
+    Generator(uint64_t seed);
 
     /** 
      * @author Alejandro Anglada
@@ -55,5 +68,23 @@ public:
      * 
      * @return The current seed value.
     */
-    u_int32_t getSeed();
+    uint64_t getSeed();
+
+    /**
+     * @author Alejandro Anglada Álvarez
+     * @date 04-06-2026
+     * 
+     * @brief Static method, does bit-wise operations and sums to a value so it
+     * is harder to decypher. It is a murmur avalanche algorithm, which means:
+     * - Deterministic, but a small change in the input (i.e. a bit changing) results
+     * in drastically different outputs.
+     * - Murmur, which multiplies and rotates the value in different ways so it is not
+     * the same input value. ((MUltiplicate & Rotate)^2)
+     * 
+     * @param x Value that gets manipulated.
+     * 
+     * @pre x must be an initialized, correctly-functioning value.
+     * @return x after getting manipulated ()
+     */
+    static uint64_t mix64(uint64_t x);
 };
