@@ -18,7 +18,7 @@ private:
      * 
      * @return _key.
      */
-    Key getKey() const;
+    Key& getKey();
 
 public:
     /**

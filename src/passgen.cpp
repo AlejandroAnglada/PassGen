@@ -10,7 +10,7 @@ bool PassGen::getSymbols() const {
     return this->_symbols;
 }
 
-Key PassGen::getKey() const {
+Key& PassGen::getKey() {
     return this->_key;
 }
 
@@ -30,12 +30,12 @@ std::string PassGen::generate(size_t len){
 
     // Luego vamos a mezclar, así que no pasa nada, así garantizamos mínimo uno de cada
     // uno de los seleccionados!
-    pwd += min[this->getKey().range(0, min.length())];
-    pwd += may[this->getKey().range(0, may.length())];
+    pwd += min[this->getKey().range(0, min.length() - 1)];
+    pwd += may[this->getKey().range(0, may.length() - 1)];
     if(this->getNum())
-        pwd += num[this->getKey().range(0, num.length())];
+        pwd += num[this->getKey().range(0, num.length() - 1)];
     if(this->getSymbols())
-        pwd += symb[this->getKey().range(0, symb.length())];
+        pwd += symb[this->getKey().range(0, symb.length() - 1)];
         
     // Rellenamos...
     while (pwd.length() < len) {
