@@ -1,10 +1,12 @@
-#include <iostream>
+#ifndef KEY_H
+#define KEY_H
+
 // Para generar números pseudoaleatorios
 // Para leer datos entrópicos de /dev/random (ó /dev/urandom)
 #include <fstream>
 #include <cstdint>
 
-class Generator{
+class Key{
 private:
     uint64_t _seed = 0;
 
@@ -38,23 +40,12 @@ public:
      * @author Alejandro Anglada Álvarez
      * @date 04-06-2026
      * 
-     * @brief Generates a valid object of Generator type.
+     * @brief Generates a valid object of Key type.
      * 
-     * @post The newly-created Generator object has a pseudo-randomly generated
+     * @post The newly-created Key object has a pseudo-randomly generated
      * _seed, associated with the current process' clock.
      */
-    Generator();
-
-    /**
-     * @author Alejandro Anglada
-     * @date 04-06-2026
-     * 
-     * @brief Generates a valid object of Generator type, given a seed.
-     * 
-     * @pre The seed must be a valid instance of a uint64_t data.
-     * @post The newly-created Generator object has a _seed set to seed parameter.
-     */
-    Generator(uint64_t seed);
+    Key();
 
     /** 
      * @author Alejandro Anglada
@@ -64,7 +55,7 @@ public:
      * 
      * @return The current seed value.
     */
-    uint64_t getSeed();
+    uint64_t getSeed() const;
 
     /**
      * @author Alejandro Anglada Álvarez
@@ -83,4 +74,29 @@ public:
      * @return x after getting manipulated ()
      */
     static uint64_t mix64(uint64_t x);
+
+    /**
+     * @author Alejandro Anglada Álvarez
+     * @date 04-06-2026
+     * 
+     * @brief Outputs a deterministic number based on the key.
+     * 
+     * @return A deterministic number, that came from the entropy-based random seed.
+     */
+    uint64_t next();
+
+    /**
+     * @author Alejandro Anglada Álvarez
+     * @date 04-06-2026
+     * 
+     * @brief Returns a value inbetween the selected range.
+     * 
+     * @param min Lower bound of the range.
+     * @param max Higher bound of the range.
+     * 
+     * @return A number in the range (min, max].
+     */
+    uint64_t range(int min, int max);
 };
+
+#endif

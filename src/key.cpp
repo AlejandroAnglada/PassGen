@@ -1,14 +1,15 @@
-#include "../include/generator.h"
+#include <iostream>
+#include "../include/key.h"
 
 // Private
 
-bool Generator::setSeed(uint64_t s){
+bool Key::setSeed(uint64_t s){
     uint64_t currSeed = this->_seed;
     this->_seed = s;
     return this->_seed != currSeed;
 }
 
-uint64_t Generator::readKernelEntropy(){
+uint64_t Key::readKernelEntropy(){
     // El dispositivo /dev/urandom tiene datos entrópicos en los sistemas UNIX.
     // Lee cosas como interferencias electromagnéticas, temperatura, posición
     // del ratón, etc para generar "ruido" extremadamente difícil de predecir.
@@ -24,29 +25,23 @@ uint64_t Generator::readKernelEntropy(){
         throw std::runtime_error("Error reading from /dev/urandom.");
 
     // Murmur con avalancha, operación AND para mayor confusión
-    return Generator::mix64(a) ^ Generator::mix64(b);
+    return Key::mix64(a) ^ Key::mix64(b);
 }
 
 // Public
 
-Generator::Generator(){
+Key::Key(){
     // Usa de semilla la entropía actual del sistema
     uint64_t currTime = this->readKernelEntropy();
     if(!this->setSeed(currTime))
         std::cerr << "WARNING! Seed not initialized correctly!";
 }
 
-Generator::Generator(uint64_t seed){
-    // Asociamos la semilla!
-    if(!this->setSeed(seed))
-        std::cerr << "WARNING! Seed not initialized correctly!";
-}
-
-uint64_t Generator::getSeed(){
+uint64_t Key::getSeed() const {
     return this->_seed;
 }
 
-uint64_t Generator::mix64(uint64_t x){
+uint64_t Key::mix64(uint64_t x){
     // Los valores mágicos son del estándar MurmurHash3, no son inventados.
     x ^= x >> 30;
     x *= 0xbf58476d1ce4e5b9ULL;
@@ -54,4 +49,17 @@ uint64_t Generator::mix64(uint64_t x){
     x *= 0x94d049bb133111ebULL;
     x ^= x >> 31;
     return x;
+}
+
+uint64_t Key::next(){
+    uint64_t key = this->_seed;
+    key += 0x9e3779b97f4a7c15;
+    key = (key ^ (key >> 30)) * 0xbf58476d1ce4e5b9;
+    key = (key ^ (key >> 27)) * 0x94d049bb133111eb;
+    this->_seed = key ^ (key >> 31);
+    return this->_seed;
+}
+
+uint64_t Key::range(int min, int max){
+    return min + (this->next() % (max - min + 1));
 }
