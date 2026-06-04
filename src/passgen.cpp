@@ -18,7 +18,7 @@ std::string PassGen::generate(size_t len){
     std::string min = "qwertyuiopasdfghjklzxcvbnm";
     std::string may = "QWERTYUIOPASDFGHJKLZXCVBNM";
     std::string num = "1234567890";
-    std::string symb = "¡!¿?;:,.*^-_'@#$&()[]{}=|/<>";
+    std::string symb = "!?;:,.*^-_'@#$&()[]{}=|/<>";
 
     std::string all = min + may;
     if(this->getNum())
