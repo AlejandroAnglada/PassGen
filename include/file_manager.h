@@ -96,6 +96,18 @@ public:
      */
     bool savePassword(std::string key, std::string pwd);
 
+    /**
+     * @author Alejandro Anglada Álvarez
+     * @date 06-06-2026
+     * 
+     * @brief Checks if a given JSON content string has a valid format (i.e. all his { close).
+     * 
+     * @param jsonContent Contents of the JSON file.
+     * 
+     * @return true if it has a valid format; false otherwise.
+     */
+    static bool isValidJson(std::string jsonContent);
+
 };
 
 #endif
