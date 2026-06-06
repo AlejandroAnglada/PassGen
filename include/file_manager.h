@@ -8,6 +8,7 @@ class FileManager{
 private:
 
     std::fstream _json;
+    std::string _path;
     bool _isOpen;
 
     /**
