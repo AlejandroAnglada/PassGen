@@ -2,11 +2,11 @@
 
 PassGen::PassGen(bool num, bool symb) : _key(), _num(num), _symbols(symb) {}
 
-bool PassGen::getNum() const {
+bool PassGen::hasNumbers() const {
     return this->_num;
 }
 
-bool PassGen::getSymbols() const {
+bool PassGen::hasSymbols() const {
     return this->_symbols;
 }
 
@@ -21,9 +21,9 @@ std::string PassGen::generate(size_t len){
     std::string symb = "!?;:,.*^-_'@#$&()[]{}=|/<>";
 
     std::string all = min + may;
-    if(this->getNum())
+    if(this->hasNumbers())
         all += num;
-    if(this->getSymbols())
+    if(this->hasSymbols())
         all += symb;
 
     std::string pwd;
@@ -32,9 +32,9 @@ std::string PassGen::generate(size_t len){
     // uno de los seleccionados!
     pwd += min[this->getKey().range(0, min.length() - 1)];
     pwd += may[this->getKey().range(0, may.length() - 1)];
-    if(this->getNum())
+    if(this->hasNumbers())
         pwd += num[this->getKey().range(0, num.length() - 1)];
-    if(this->getSymbols())
+    if(this->hasSymbols())
         pwd += symb[this->getKey().range(0, symb.length() - 1)];
         
     // Rellenamos...

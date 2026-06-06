@@ -39,21 +39,21 @@ public:
      * @author Alejandro Anglada Álvarez
      * @date 04-06-2026
      * 
-     * @brief _num attribute's getter.
+     * @brief Returns whether numbers will be included in the password or not.
      * 
-     * @return _num.
+     * @return true if numbers are included; false otherwise.
      */
-    bool getNum() const;
+    bool hasNumbers() const;
 
     /**
      * @author Alejandro Anglada Álvarez
      * @date 04-06-2026
      * 
-     * @brief _symbols attribute's getter.
+     * @brief Returns whether symbols will be included in the password or not.
      * 
-     * @return _symbols.
+     * @return true if symbols are included; false otherwise.
      */
-    bool getSymbols() const;
+    bool hasSymbols() const;
 
     /**
      * @author Alejandro Anglada Álvarez
