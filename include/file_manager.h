@@ -52,6 +52,16 @@ public:
 
     /**
      * @author Alejandro Anglada Álvarez
+     * @date 06-06-2026
+     * 
+     * @brief FileManager class' destructor. Safely destroys the instance.
+     * 
+     * @post The object associated to the FileManager's instance has been destroyed succesfuly.
+     */
+    ~FileManager();
+
+    /**
+     * @author Alejandro Anglada Álvarez
      * @date 04-06-2026
      * 
      * @brief Closes the fstream item.
